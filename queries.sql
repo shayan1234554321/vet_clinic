@@ -79,11 +79,11 @@ where escape_attempts = 0;
 
 select avg(weight_kg) from animals;
 
-select neutered, MAX(escape_attempts) FROM animals 
-GROUP BY neutered;
+select neutered, MAX(escape_attempts) from animals 
+group by neutered;
 
 select species, MIN( weight_kg ), MAX( weight_kg ) from animals 
-GROUP by species;
+group by species;
 
 select species ,AVG( escape_attempts ) from animals
 where date_of_birth between '1990-1-1' and '2000-12-31'
@@ -116,3 +116,56 @@ where owners.full_name = 'Dean Winchester' and animals.escape_attempts = 0;
 select owners.full_name , count(animals.id) from owners
 join animals on animals.owner_id = owners.id
 group by owners.full_name;
+
+select * from visits
+where vet_id = (select id from vets where full_name = 'William Tatcher')
+order by date desc
+limit 1;
+
+select count(distinct animal_id) from visits
+where vet_id = ( select id from vets where full_name = 'Stephanie Mendez' );
+
+select vets.name , species.name from specialization
+left join species on species.id = specialization.species_id
+left join vets on vets.id = specialization.vet_id;
+
+select animals.name from visits
+join animals on animals.id = visits.animal_id
+where visits.vet_id = ( select id from vets where full_name = 'Stephanie Mendez' )
+and visits.visit_date >= '2020-04-01'
+and visits.visit_date <= '2020-08-30';
+
+select animals.name, count(*) as visit_count from visits
+join animals on animals.id = visits.animal_id
+group by animals.name
+order by visit_count
+limit 1;
+
+select vets.name, animals.name AS animal_name, visits.visit_date
+from visits
+join animals on animals.id = visits.animal_id
+join vets on vets.id = visits.vet_id
+where animals.owner_id = (select id from owners where full_name = 'Maisy Smith')
+order by visits.visit_date ASC
+limit 1;
+
+select animals.*, vets.*, visits.visit_date
+from visits
+join animals on animals.id = visits.animal_id
+join vets on vets.id = visits.vet_id
+order by visits.visit_date desc
+limit 1;
+
+select count(*) from visits
+join animals on animals.id = visits.animal_id
+join vets on vets.id = visits.vet_id
+LEFT join specialization on vets.id = specialization.vet_id and animals.species_id = specialization.species_id
+where specialization.id IS NULL;
+
+select species.name, count(*) AS visit_count from visits
+join animals on animals.id = visits.animal_id
+join species on species.id = animals.species_id
+where animals.owner_id = (select id from owners where full_name = 'Maisy Smith')
+group by species.name
+order by visit_count desc
+limit 1;
