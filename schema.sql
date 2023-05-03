@@ -52,4 +52,4 @@ create table visits (
     visit_date date,
     foreign key (animal_id) references animals(id),
     foreign key (vet_id) references vets(id)
-)
+);

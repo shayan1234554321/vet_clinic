@@ -64,7 +64,7 @@ VALUES ('William Tatcher', 45, '2000-04-23'),
 ('Jack Harkness', 38, '2008-06-08');
 
 
-INSERT INTO specializations (vet_id, species_id)
+INSERT INTO specialization (vet_id, species_id)
 VALUES (1, 1),
 (3, 2),
 (3, 1),
