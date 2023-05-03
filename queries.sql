@@ -141,16 +141,14 @@ group by animals.name
 order by visit_count
 limit 1;
 
-select vets.name, animals.name AS animal_name, visits.visit_date
-from visits
+select vets.name, animals.name AS animal_name, visits.visit_date from visits
 join animals on animals.id = visits.animal_id
 join vets on vets.id = visits.vet_id
 where animals.owner_id = (select id from owners where full_name = 'Maisy Smith')
 order by visits.visit_date ASC
 limit 1;
 
-select animals.*, vets.*, visits.visit_date
-from visits
+select animals.*, vets.*, visits.visit_date from visits
 join animals on animals.id = visits.animal_id
 join vets on vets.id = visits.vet_id
 order by visits.visit_date desc
